@@ -36,17 +36,17 @@ Running Locally
 1. (Optional) Create and activate a virtual environment
 
 2. Install dependencies
-
+    ```
     pip install -r requirements.txt
-
+    ```
 3. Set required environment variables
-
+    ```
     export OPENAI_API_KEY=your_api_key_here
-
+    ```
 4. Start the development server
-
+    ```
     uvicorn app.main:app --reload
-
+    ```
 --------------------------------------------------
 
 Deployment
