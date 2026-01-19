@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://192.168.1.71:8000";
+const API_BASE_URL = "https://astroguide-production-f6e1.up.railway.app";
 
 export async function sendChatMessage(
   message: string,

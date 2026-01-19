@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, Text, TextInput, Button, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, Linking, Alert, useColorScheme, } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { sendChatMessage } from "../../services/api";
+import { sendChatMessage } from "../services/api";
 
 const CHAT_STORAGE_KEY = "astroguide_chat_history";
 const THEME_STORAGE_KEY = "astroguide_theme"
@@ -172,139 +174,143 @@ export default function ChatScreen() {
   const themeColors = theme === "dark" ? darkTheme : lightTheme;
 
   return (
-    <KeyboardAvoidingView
-      style = {{flex: 1}}
-      behavior = {Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset = {Platform.OS == "ios" ? 80 : 0}
-    >
-      <View style={[styles.container, {backgroundColor: themeColors.background}]}>
-        <View style = {styles.header}>
-          <Text style={[styles.title, {color: themeColors.text}]}>
-            AstroGuide 🌌
-          </Text>
-
-          <View style = {{flexDirection: "row", alignItems: "center", gap: 12}}>
-            <TouchableOpacity
-              onPress = {() => setTheme(theme === "dark" ? "light" : "dark")}
-            >
-              <Text style = {{ color: themeColors.text, fontSize: 18}}>
-                {theme === "dark" ? "☀️" : "🌙"}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress = {handleClearChat}>
-              <Text style = {styles.clearButtonText}>Clear Chat</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        
-        <View style = {styles.levelToggle}>
-          <Text style = {[styles.levelLabel, {color: themeColors.text}]}>Learning level:</Text>
-
-          <View style = {styles.toggleContainer}>
-            <Text
-              style = {[
-                styles.toggleOption,
-                level === "beginner" && styles.activeToggle
-              ]}
-              onPress = {() => setLevel("beginner")}
-            >
-              Beginner
+    <SafeAreaView style = {{ flex: 1, backgroundColor: themeColors.background }}>
+      <StatusBar style = {theme === "dark" ? "light" : "dark"} />
+      
+      <KeyboardAvoidingView
+        style = {{flex: 1}}
+        behavior = {Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset = {Platform.OS == "ios" ? 80 : 0}
+      >
+        <View style={[styles.container, {backgroundColor: themeColors.background}]}>
+          <View style = {styles.header}>
+            <Text style={[styles.title, {color: themeColors.text}]}>
+              AstroGuide 🌌
             </Text>
 
-            <Text
-              style = {[
-                styles.toggleOption,
-                level === "advanced" && styles.activeToggle,
-              ]}
-              onPress = {() => setLevel("advanced")}
-            >
-              Advanced
-            </Text>
-          </View>
-        </View>
+            <View style = {{flexDirection: "row", alignItems: "center", gap: 12}}>
+              <TouchableOpacity
+                onPress = {() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                <Text style = {{ color: themeColors.text, fontSize: 18}}>
+                  {theme === "dark" ? "☀️" : "🌙"}
+                </Text>
+              </TouchableOpacity>
 
-        <ScrollView 
-          style = {styles.chatContainer}
-          ref = {scrollViewRef}
-          keyboardShouldPersistTaps = "handled"
-          onContentSizeChange={() => 
-            scrollViewRef.current?.scrollToEnd({ animated: true })
-          }
-        >
-          {messages.map((msg, index) => (
-            <View
-              key = {index}
-              style = {[
-                styles.message,
-                msg.role === "user"
-                  ? styles.userMessage
-                  : styles.assistantMessage,
-                {
-                  backgroundColor:
-                    msg.role === "user"
-                      ? themeColors.userBubble
-                      : themeColors.assistantBubble,
-                },
-              ]}
-            >
-              
-              <Text style = {[styles.messageText, {color: themeColors.text}]}>{msg.content}</Text>
-
-              {msg.role === "assistant" &&
-                msg.sources &&
-                msg.sources.length > 0 && (
-                  <View style = {styles.sourcesContainer} >
-                      <Text style = {[styles.sourcesTitle, {color: themeColors.text}]}>Sources:</Text>
-
-                    <Text style = {styles.sourcesDisclaimer}>
-                      Links are provided for reference and may change over time.
-                    </Text>
-
-                    {msg.sources.map((url, i) => (
-                      <TouchableOpacity
-                        key = {i}
-                        onPress = {() => Linking.openURL(url)}
-                      >
-                        <Text style = {styles.sourceItem}>
-                          • {getDisplayDomain(url)}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                )}
+              <TouchableOpacity onPress = {handleClearChat}>
+                <Text style = {styles.clearButtonText}>Clear Chat</Text>
+              </TouchableOpacity>
             </View>
-          ))}
-        </ScrollView>
+          </View>
+          
+          <View style = {styles.levelToggle}>
+            <Text style = {[styles.levelLabel, {color: themeColors.text}]}>Learning level:</Text>
 
-        <TextInput
-          style={[styles.input,
-            {
-              backgroundColor: themeColors.inputBackground,
-              color: themeColors.text,
-            },
-          ]}
-          placeholder="Ask a space question..."
-          placeholderTextColor={themeColors.placeholder}
-          value={message}
-          onChangeText={setMessage}
-          editable = {!loading}
-        />
+            <View style = {styles.toggleContainer}>
+              <Text
+                style = {[
+                  styles.toggleOption,
+                  level === "beginner" && styles.activeToggle
+                ]}
+                onPress = {() => setLevel("beginner")}
+              >
+                Beginner
+              </Text>
 
-        <Button 
-          title = {loading ? "Thinking..." : "Send"}
-          onPress = {handleSend}
-          disabled = {loading}
-        />
-      </View>
-    </KeyboardAvoidingView>
+              <Text
+                style = {[
+                  styles.toggleOption,
+                  level === "advanced" && styles.activeToggle,
+                ]}
+                onPress = {() => setLevel("advanced")}
+              >
+                Advanced
+              </Text>
+            </View>
+          </View>
+
+          <ScrollView 
+            style = {styles.chatContainer}
+            contentContainerStyle = {{ paddingBottom: 12 }}
+            ref = {scrollViewRef}
+            keyboardShouldPersistTaps = "handled"
+            onContentSizeChange={() => 
+              scrollViewRef.current?.scrollToEnd({ animated: true })
+            }
+          >
+            {messages.map((msg, index) => (
+              <View
+                key = {index}
+                style = {[
+                  styles.message,
+                  msg.role === "user"
+                    ? styles.userMessage
+                    : styles.assistantMessage,
+                  {
+                    backgroundColor:
+                      msg.role === "user"
+                        ? themeColors.userBubble
+                        : themeColors.assistantBubble,
+                  },
+                ]}
+              >
+                
+                <Text style = {[styles.messageText, {color: themeColors.text}]}>{msg.content}</Text>
+
+                {msg.role === "assistant" &&
+                  msg.sources &&
+                  msg.sources.length > 0 && (
+                    <View style = {styles.sourcesContainer} >
+                        <Text style = {[styles.sourcesTitle, {color: themeColors.text}]}>Sources:</Text>
+
+                      <Text style = {styles.sourcesDisclaimer}>
+                        Links are provided for reference and may change over time.
+                      </Text>
+
+                      {msg.sources.map((url, i) => (
+                        <TouchableOpacity
+                          key = {i}
+                          onPress = {() => Linking.openURL(url)}
+                        >
+                          <Text style = {styles.sourceItem}>
+                            • {getDisplayDomain(url)}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  )}
+              </View>
+            ))}
+          </ScrollView>
+
+          <TextInput
+            style={[styles.input,
+              {
+                backgroundColor: themeColors.inputBackground,
+                color: themeColors.text,
+              },
+            ]}
+            placeholder="Ask a space question..."
+            placeholderTextColor={themeColors.placeholder}
+            value={message}
+            onChangeText={setMessage}
+            editable = {!loading}
+          />
+
+          <Button 
+            title = {loading ? "Thinking..." : "Send"}
+            onPress = {handleSend}
+            disabled = {loading}
+          />
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    marginTop: 50,
     backgroundColor: "#f8f8f8",
     flex: 1,
   },
