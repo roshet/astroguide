@@ -20,7 +20,7 @@ Tech Stack
 --------------------------------------------------
 
 Project Structure
-
+```
 backend/
 ├── app/
 │   ├── main.py   FastAPI app entry point and routing
@@ -28,7 +28,7 @@ backend/
 ├── requirements.txt
 ├── runtime.txt
 └── README.md
-
+```
 --------------------------------------------------
 
 Running Locally
@@ -37,15 +37,15 @@ Running Locally
 
 2. Install dependencies
 
-pip install -r requirements.txt
+    pip install -r requirements.txt
 
 3. Set required environment variables
 
-export OPENAI_API_KEY=your_api_key_here
+    export OPENAI_API_KEY=your_api_key_here
 
 4. Start the development server
 
-uvicorn app.main:app --reload
+    uvicorn app.main:app --reload
 
 --------------------------------------------------
 
