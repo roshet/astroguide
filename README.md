@@ -26,12 +26,14 @@ This repository focuses on clarity, simplicity, and real deployment.
 ---
 
 ## Repository Structure
+
 ```
 astroguide/
-├── backend/ # FastAPI backend
-├── mobile/ # React Native / Expo mobile app
+├── backend/   # FastAPI backend
+├── mobile/    # React Native / Expo mobile app
 └── README.md
 ```
+
 ---
 
 ## Features
