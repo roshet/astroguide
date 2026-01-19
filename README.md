@@ -28,8 +28,8 @@ This repository focuses on clarity, simplicity, and real deployment.
 ## Repository Structure
 
 astroguide/
-├── backend/   # FastAPI backend
-├── mobile/    # React Native / Expo mobile app
+├── backend/ # FastAPI backend
+├── mobile/ # React Native / Expo mobile app
 └── README.md
 
 ---
@@ -49,8 +49,8 @@ astroguide/
 
 Each part of the project has its own setup instructions:
 
-- Backend setup: see backend/README.md
-- Mobile app setup: see mobile/README.md
+- Backend setup: see `backend/README.md`
+- Mobile app setup: see `mobile/README.md`
 
 ---
 
@@ -58,7 +58,7 @@ Each part of the project has its own setup instructions:
 
 The backend is fully deployed and publicly accessible.
 
-The mobile app is built using Expo. Distributing the iOS app outside of local development requires an Apple Developer account, so the app currently runs via Expo’s development environment.
+The mobile app is built using Expo. Publishing the iOS app outside of local development requires an Apple Developer account, so the app currently runs via Expo’s development environment.
 
 ---
 
